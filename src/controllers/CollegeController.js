@@ -56,10 +56,6 @@ module.exports = {
             return cur;
           };
           const ids = new Set(acc.map(a => a.co_curso));
-          const id1 = new Set(src[0].map(a => a.co_curso));
-          const id2 = new Set(src[1].map(a => a.co_curso));
-          console.log(id1);
-          console.log(id2);
           const merged = [...acc, ...cur.filter(b => !ids.has(b.co_curso))];
           return merged;
         }, []);
