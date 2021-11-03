@@ -6,7 +6,7 @@ const CollegeController = require("./controllers/CollegeController");
 
 const routes = express.Router();
 
-routes.get("/search", StudentController.index);
+routes.post("/research", StudentController.testIndex);
 routes.post("/ies_names", IesController.index);
 routes.post("/college_names", CollegeController.index);
 
