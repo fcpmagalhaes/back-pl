@@ -1,8 +1,8 @@
 const dbConnection = require('../database/connection');
 const Promise = require('bluebird');
 
-function orderByName(listObjects) {
-  return listObjects.sort((first, second) => {
+function orderByNameAndAddValue(listObjects) {
+  listObjects.sort((first, second) => {
     if (first.label > second.label) {
       return 1;
     }
@@ -10,6 +10,11 @@ function orderByName(listObjects) {
       return -1;
     }
     return 0;
+  });
+
+  return listObjects.map((option, index) => {
+    option.value = index + 1;
+    return option;
   });
 };
 
@@ -94,7 +99,7 @@ module.exports = {
       collegeOptions.value = 1;
       collegeOptions.label = "Nome do Curso";
       collegeOptions.type = "select";
-      collegeOptions.options = orderByName(removedDuplicatedNames);
+      collegeOptions.options = orderByNameAndAddValue(removedDuplicatedNames);
 
       filters.push(collegeOptions);
       return res.json(filters);
