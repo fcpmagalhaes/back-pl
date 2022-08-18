@@ -140,7 +140,7 @@ module.exports = {
 
       const removedDuplicatedNames = getUniqueListBy(optionsYearsJoint, 'label');
 
-      collegeOptions.value = 1;
+      collegeOptions.value = 5;
       collegeOptions.label = "Nome do Curso";
       collegeOptions.type = "select";
       collegeOptions.options = orderByNameAndAddValue(removedDuplicatedNames);
