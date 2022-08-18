@@ -1,42 +1,127 @@
 const dbConnection = require('../database/connection');
 const Promise = require('bluebird');
 
-function orderByName(listObjects) {
-  return listObjects.sort((first, second) => {
-    if (first.no_ies > second.no_ies) {
-      return 1;
-    }
-    if (first.no_ies < second.no_ies) {
-      return -1;
-    }
-    return 0;
-  });
-};
-
-async function executeQuery(year) {
+async function executeQuery(year, whereFilters) {
   try {
-    return await dbConnection.raw(`select co_ies, no_ies from ies_${year}`);
+    return await dbConnection.raw(`select count(*) from aluno_${year} where ${whereFilters}`);
   } catch(error) {
     console.log(error);
   }
 };
 
+function iesFilterQuery(iesFilters) {
+  if (iesFilters.length !== 0 ) {
+    const andSQL = 'AND';
+    const inSQL = 'IN';
+    const equalSQL = '=';
+    const query = iesFilters.map((filter) => {
+      let queryFIlter ='';
+      if (filter.label === 'Nome da Instituição') {
+          let optionsCoIES;
+          if (filter.options.length === 1) {
+            optionsCoIES = `${equalSQL} ${filter.options[0].value}`;
+          } else {
+            optionsCoIES = `${inSQL}(`;
+            filter.options.map((option,index) => {
+              if (option === options[options.length -1]) {
+                optionsCoIES.concat(`${option.value})`);
+              } else {
+                optionsCoIES.concat(`${option.value},`);
+              }
+            });
+            console.log('optionsCoIES mais', optionsCoIES);
+          }
+          console.log('optionsCoIES', optionsCoIES);
+          console.log('queryFIlter antes', queryFIlter);
+          queryFIlter = `CO_IES ${optionsCoIES}`;
+          console.log('queryFIlter depois', queryFIlter);
+          return queryFIlter;
+
+      
+      } else if (filter.label === 'Organização Acadêmica') {
+        
+      } else if (filter.label === 'Categoria Administrativa') {
+        
+      }
+    });
+    // CO_IES
+    // TP_CATEGORIA_ADMINISTRATIVA
+    // TP_ORGANIZACAO_ACADEMICA
+    console.log('QUERY', query);
+    // return query;
+    return ''
+
+  }
+  return '';
+
+}
+
+function collegeFilterQuery(collegeFilters) {
+
+  query = '';
+  return query;
+  
+}
+
+function studentFilterQuery(studentFilters) {
+
+  query = '';
+  return query;
+  
+}
+
 module.exports = {
   async testIndex(req, res) {
     try {
-      const { rangeYears } = req.body.data;
-      let iesList;
+      const { rangeYears, iesFilters, collegeFilters, studentFilters } = req.body.data;
+      let finalResearch = [];
       if (rangeYears.length > 1) {
-        // rangeYears
-        // iesFilters
-        // collegeFilters
-        // studentFilters
-        console.log(req.body.data);
+        console.log("MAIS DE UM ANO");
+        const iesOptions = iesFilterQuery(iesFilters);
+        const collegeOptions = iesFilterQuery(collegeFilters);
+        const studentOptions = iesFilterQuery(studentFilters);
+
+        // console.log("iesOptions", iesOptions);
+        // console.log("collegeOptions", collegeOptions);
+        // console.log("studentOptions", studentOptions);
         
-        iesList = 'mais de um ano';
+        const whereFilters = `${iesOptions} ${collegeOptions} ${studentOptions}`
+
+        // const response = await Promise.map(
+        //   range,
+        //   async (year) => {
+        //     const data = await executeQuery(year, whereFilters);
+        //     console.log('data');
+        //     const payload = {
+        //       year,
+        //       finalCount: data.rows
+        //     }
+        //     return payload;
+        //   },
+        //   {concurrency: 2}
+        // );
+        
+        // finalResearch.push(response);
       } 
       else {
-        iesList = 'somente um ano';
+        console.log("UM ANO");
+        const iesOptions = iesFilterQuery(iesFilters);
+        const collegeOptions = iesFilterQuery(collegeFilters);
+        const studentOptions = iesFilterQuery(studentFilters);
+
+        console.log("iesOptions", iesOptions);
+        console.log("collegeOptions", collegeOptions);
+        console.log("studentOptions", studentOptions);
+        
+        const whereFilters = `${iesOptions} ${collegeOptions} ${studentOptions}`;
+        const names = await executeQuery(year, whereFilters);
+        const data = await executeQuery(year, whereFilters);
+        console.log('data');
+        const payload = {
+          year,
+          finalCount: data.rows
+        }
+        finalResearch.push(payload);
       }
       return res.json(iesList);
     } catch (error) {
