@@ -21,6 +21,14 @@ async function genericQuery(query) {
   }
 };
 
+async function genericQuery(query) {
+  try {
+    return await dbConnection.raw(query);
+  } catch(error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   async index(req, res) {
     try {
