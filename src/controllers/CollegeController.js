@@ -33,36 +33,80 @@ function getUniqueListBy(arr, key) {
 module.exports = {
   async index(req, res) {
     try {
-      const { range } = req.body.data;
-      let collegeList = [];
-      if (range.length > 1) {
-        const response = await Promise.map(
-          range,
-          async (year) => {
-            const names = await executeQuery(year);
-            return getUniqueListBy(names.rows, 'no_curso');
-          },
-          {concurrency: 2}
-        );
+      const filters = [];
+      try {
+        const degreeLevelQuery =
+          `select 
+            id as value, 
+            descricao as label 
+          from grau_academico;`;
+        const degreeLevel = {};
+        const { rows } = await genericQuery(degreeLevelQuery);
 
-        const responseUnduplicated = response.reduce((acc, cur, idx, src) => {
-          if (acc.length === 0) {
-            return cur;
-          };
-          const ids = new Set(acc.map(a => a.co_curso));
-          const merged = [...acc, ...cur.filter(b => !ids.has(b.co_curso))];
-          return merged;
-        }, []);
-        collegeList = responseUnduplicated;
+        degreeLevel.value = 1;
+        degreeLevel.label = "Gráu Acadêmico";
+        degreeLevel.type = "select";
+        degreeLevel.options = rows;
+        filters.push(degreeLevel);
+      } catch (error) {
+        return res.json(error);
       }
-      else {
-        const year = range[0];
-        const response = await executeQuery(year);
-        const removedDuplicatedNames = getUniqueListBy(response.rows, 'no_curso');
-        const unDuplicatedNamesAndCode = getUniqueListBy(removedDuplicatedNames, 'co_curso');
-        collegeList = unDuplicatedNamesAndCode;
+
+      try {
+        const shiftQuery =
+          `select 
+            id as value, 
+            descricao as label 
+          from turno;`;
+        const shift = {};
+        const { rows } = await genericQuery(shiftQuery);
+
+        shift.value = 2;
+        shift.label = "Turno";
+        shift.type = "select";
+        shift.options = rows;
+        filters.push(shift);
+      } catch (error) {
+        return res.json(error);
       }
-      return res.json(orderByName(collegeList));
+
+      try {
+        const academicLevelQuery =
+          `select 
+            id as value, 
+            descricao as label 
+          from nivel_academico;`;
+        const academicLevel = {};
+        const { rows } = await genericQuery(academicLevelQuery);
+
+        academicLevel.value = 3;
+        academicLevel.label = "Nível Acadêmico";
+        academicLevel.type = "select";
+        academicLevel.options = rows;
+        filters.push(academicLevel);
+      } catch (error) {
+        return res.json(error);
+      }
+
+      try {
+        const teachingModalityQuery =
+          `select 
+            id as value, 
+            descricao as label 
+          from modalidade_ensino;`;
+        const teachingModality = {};
+        const { rows } = await genericQuery(teachingModalityQuery);
+
+        teachingModality.value = 4;
+        teachingModality.label = "Modalidade de Ensino";
+        teachingModality.type = "select";
+        teachingModality.options = rows;
+        filters.push(teachingModality);
+      } catch (error) {
+        return res.json(error);
+      }
+
+      return res.json(filters);
     } catch (error) {
       return res.json(error);
     }
