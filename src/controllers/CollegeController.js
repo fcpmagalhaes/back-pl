@@ -114,9 +114,27 @@ module.exports = {
 
   async collegeNames(req, res) {
     try {
-      const { range } = req.body.data;
+      const { range, iesFilters } = req.body.data;
       const filters = [];
       let collegeOptions = {};
+
+      const stringSQL = iesFilters.map((filter) => {
+        if (filter.value === 1) {
+          return filter.options.map((option) => {
+           return `tp_organizacao_academica = ${option.value}`;
+          });
+        }
+        if (filter.value === 2) {
+          return filter.options.map((option) => {
+            return `tp_categoria_administrativa = ${option.value}`;
+           });
+        }
+        if (filter.value === 3) {
+          return filter.options.map((option) => {
+            return `co_ies = ${option.value}`;
+           });
+        }
+      });
 
       const options = await Promise.map(
         range,
@@ -125,6 +143,7 @@ module.exports = {
             `select 
               no_curso as label 
             from curso_${year}
+            where ${stringSQL.flat().join(" or ")}
             group by no_curso 
             having count(*) > 0
             order by no_curso`
