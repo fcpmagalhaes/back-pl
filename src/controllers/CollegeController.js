@@ -117,6 +117,9 @@ module.exports = {
       const { range, iesFilters } = req.body.data;
       const filters = [];
       let collegeOptions = {};
+      console.log(range);
+      console.log(iesFilters);
+      
 
       const stringSQL = iesFilters.map((filter) => {
         if (filter.value === 1) {
@@ -136,17 +139,30 @@ module.exports = {
         }
       });
 
+      console.log("stringSQL", stringSQL);
+
       const options = await Promise.map(
         range,
         async (year) => {
-          const collegeNamesQuery =
-            `select 
-              no_curso as label 
-            from curso_${year}
-            where ${stringSQL.flat().join(" or ")}
-            group by no_curso 
-            having count(*) > 0
-            order by no_curso`
+          let collegeNamesQuery = "";
+          if (stringSQL.length !== 0) {
+            collegeNamesQuery =
+              `select 
+                no_curso as label 
+              from curso_${year}
+              where ${stringSQL.flat().join(" or ")}
+              group by no_curso 
+              having count(*) > 0
+              order by no_curso`
+          } else {
+            collegeNamesQuery =
+              `select 
+                no_curso as label 
+              from curso_${year}
+              group by no_curso 
+              having count(*) > 0
+              order by no_curso`
+          }
           const names = await genericQuery(collegeNamesQuery);
           return names.rows;
         },
