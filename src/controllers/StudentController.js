@@ -1,6 +1,6 @@
 const dbConnection = require('../database/connection');
-const studentStaticFilters = require('../utils/studentFilters');
-const studentSelectorFilters = require('../utils/studentFilters');
+const { studentStaticFilters } = require('../utils/studentStaticFilters');
+const { studentSelectorFilters } = require('../utils/studentSelectorFilters');
 
 async function genericQuery(query) {
   try {
@@ -13,7 +13,7 @@ async function genericQuery(query) {
 module.exports = {
   async index(req, res) {
     try {
-      const filters = await Promise.all(studentSelectorFilters().map(async (option) => {
+      const filters = await Promise.all(studentSelectorFilters.map(async (option) => {
         try {
           const query =
             `select 
@@ -34,8 +34,8 @@ module.exports = {
         }
       }));
 
-      const concatFiltersAndSort = filters.concat(studentStaticFilters()).sort((a,b) => a.value - b.value);
-
+      const concatFiltersAndSort = filters.concat(studentStaticFilters).sort((a,b) => a.value - b.value);
+  
       return res.json(concatFiltersAndSort);
     } catch (error) {
       return res.json(error);
