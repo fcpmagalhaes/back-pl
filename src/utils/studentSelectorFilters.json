@@ -1,0 +1,12 @@
+{
+  "studentSelectorFilters":  [
+    { "table": "cor_raca", "valueNumber": 1, "label": "Cor Raça", "type": "select" },
+    { "table": "sexo", "valueNumber": 2, "label": "Sexo", "type": "select" },
+    { "table": "situacao_vinculo", "valueNumber": 4, "label": "Tipo de Situação", "type": "select" },
+    { "table": "possui_deficiencia", "valueNumber": 5, "label": "Possui Deficiência", "type": "select" },
+    { "table": "escola_conclusao_ensino_medio", "valueNumber": 27, "label": "Tipo Escola Conclusão Ens. Médio", "type": "select" },
+    { "table": "semestre_conclusao", "valueNumber": 28, "label": "Semestre de Conclusão", "type": "select" },
+    { "table": "mobilidade_academica", "valueNumber": 29, "label": "Mobilidade Acadêmica", "type": "select" },
+    { "table": "nacionalidade", "valueNumber": 30, "label": "Nacionalidade", "type": "select" }
+  ]
+}
