@@ -101,7 +101,7 @@ module.exports = {
       if (range.length > 1) {
         iesOptions.options = removeDuplicates(options);
       } else {
-        iesOptions.options = options;  
+        iesOptions.options = options[0];  
       }
 
       iesOptions.value = 3;
