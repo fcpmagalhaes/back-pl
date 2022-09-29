@@ -105,7 +105,67 @@ function studentFilterQuery(studentFilters) {
       };
       if (filter.value === 28) {
         return subQuery(filter, 'TP_NACIONALIDADE');
-      };
+      }; 
+      if ( filter.value === 3 ) { 
+        return subQueryCheck(filter, 'NU_IDADE');
+      }
+      if ( filter.value === 6 ) { 
+        return subQueryCheck(filter, 'IN_INGRESSO_VESTIBULAR');
+      }
+      if ( filter.value === 7 ) { 
+        return subQueryCheck(filter, 'IN_INGRESSO_ENEM');
+      }
+      if ( filter.value === 8 ) { 
+        return subQueryCheck(filter, 'IN_INGRESSO_AVALIACAO_SERIADA');
+      }
+      if ( filter.value === 9 ) { 
+        return subQueryCheck(filter, 'IN_INGRESSO_SELECAO_SIMPLIFICA');
+      }
+      if ( filter.value === 10 ) { 
+        return subQueryCheck(filter, 'IN_INGRESSO_VAGA_REMANESC');
+      }
+      if ( filter.value === 11 ) { 
+        return subQueryCheck(filter, 'IN_INGRESSO_VAGA_PROG_ESPECIAL');
+      }
+      if ( filter.value === 12 ) { 
+        return subQueryCheck(filter, 'IN_INGRESSO_TRANSF_EXOFFICIO');
+      }
+      if ( filter.value === 13 ) { 
+        return subQueryCheck(filter, 'IN_INGRESSO_DECISAO_JUDICIAL');
+      }
+      if ( filter.value === 14 ) { 
+        return subQueryCheck(filter, 'IN_INGRESSO_CONVENIO_PECG');
+      }
+      if ( filter.value === 15 ) { 
+        return subQueryCheck(filter, 'IN_INGRESSO_EGRESSO');
+      }
+      if ( filter.value === 16 ) { 
+        return subQueryCheck(filter, 'IN_RESERVA_VAGAS');
+      }
+      if ( filter.value === 17 ) { 
+        return subQueryCheck(filter, 'IN_RESERVA_ETNICO');
+      }
+      if ( filter.value === 18 ) { 
+        return subQueryCheck(filter, 'IN_RESERVA_DEFICIENCIA');
+      }
+      if ( filter.value === 19 ) { 
+        return subQueryCheck(filter, 'IN_RESERVA_ENSINO_PUBLICO');
+      }
+      if ( filter.value === 20 ) { 
+        return subQueryCheck(filter, 'IN_RESERVA_RENDA_FAMILIAR');
+      }
+      if ( filter.value === 21 ) { 
+        return subQueryCheck(filter, 'IN_RESERVA_OUTRA');
+      }
+      if ( filter.value === 22 ) { 
+        return subQueryCheck(filter, 'IN_FINANCIAMENTO_ESTUDANTIL');
+      }
+      if ( filter.value === 23 ) { 
+        return subQueryCheck(filter, 'IN_APOIO_SOCIAL');
+      }
+      if ( filter.value === 24 ) { 
+        return subQueryCheck(filter, 'IN_ATIVIDADE_EXTRACURRICULAR');
+      }
 
     });
     console.log(query);
