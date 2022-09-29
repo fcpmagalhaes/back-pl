@@ -24,9 +24,7 @@ function subQuery(filter, column) {
 
 function subQueryCollegeName(filter, column, year) {
   const inSQL = 'IN';
- 
   const options = filter.options.map(option => `'${option.label}'`);
-
   const optionsQuery = `${inSQL}(${options.join()})`;
 
   return `${column} ${inSQL}(select ${column} from curso_${year} where no_curso ${optionsQuery})`
@@ -118,28 +116,19 @@ module.exports = {
   async index(req, res) {
     try {
       const { rangeYears, iesFilters, collegeFilters, studentFilters } = req.body.data;
-      let finalResearch = [];
+
       if (rangeYears.length > 1) {
-        // console.log("MAIS DE UM ANO");
         const iesOptions = iesFilterQuery(iesFilters);
         const studentOptions = studentFilterQuery(studentFilters);
-        
-        
-        // console.log('iesOptions', iesOptions);
-        // console.log('studentOptions', studentOptions);
         
         const response = await Promise.map(
           rangeYears,
           async (year) => {
-            
             const whereFilters = [];
-            console.log(year)
             const collegeOptions = collegeFilterQuery(collegeFilters, year);
-            // console.log('collegeOptions', collegeOptions);
 
             whereFilters.push(iesOptions, collegeOptions, studentOptions);
             const whereFiltersNotNull = whereFilters.filter(filters => filters !== null).join(' AND ');
-            console.log('whereFiltersNotNull', whereFiltersNotNull);
             
             const data = await executeQuery(year, whereFiltersNotNull);
             const payload = {
@@ -150,8 +139,7 @@ module.exports = {
           },
           {concurrency: 2}
         );
-        
-        finalResearch = response;
+        return res.json(response);
       } 
       else {
         console.log("UM ANO");
@@ -171,10 +159,9 @@ module.exports = {
           year: rangeYears[0],
           finalCount: data.rows[0]
         }
-        finalResearch.push(payload);
-      }
 
-      return res.json(finalResearch);
+        return res.json(payload);
+      }
     } catch (error) {
       return res.json(error);
     }
