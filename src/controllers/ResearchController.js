@@ -52,7 +52,7 @@ function collegeFilterQuery(collegeFilters, year) {
       };
       
     });
-    return query.join(`${andSQL}`);
+    return query.join(` ${andSQL} `);
   }
   return null;
 };
@@ -94,20 +94,22 @@ function studentFilterQuery(studentFilters) {
       if (filter.value === 5) {
         return subQuery(filter, 'IN_DEFICIENCIA');
       };
-      if (filter.value === 27) {
+      if (filter.value === 25) {
         return subQuery(filter, 'TP_ESCOLA_CONCLUSAO_ENS_MEDIO');
       };
-      if (filter.value === 28) {
+      if (filter.value === 26) {
         return subQuery(filter, 'TP_SEMESTRE_CONCLUSAO');
       };
-      if (filter.value === 29) {
+      if (filter.value === 27) {
         return subQuery(filter, 'IN_MOBILIDADE_ACADEMICA');
       };
-      if (filter.value === 30) {
+      if (filter.value === 28) {
         return subQuery(filter, 'TP_NACIONALIDADE');
       };
+
     });
-    return query.join(`${andSQL}`);
+    console.log(query);
+    return query.join(` ${andSQL} `);
   }
   return null; 
 };
@@ -126,6 +128,7 @@ module.exports = {
           async (year) => {
             const collegeOptions = collegeFilterQuery(collegeFilters, year);
             const whereFilters = [iesOptions, collegeOptions, studentOptions];
+            // console.log(whereFilters);
             const whereFiltersNotNull = whereFilters.filter(filters => filters !== null).join(' AND ');
             
             const data = await executeQuery(year, whereFiltersNotNull);
