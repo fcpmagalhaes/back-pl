@@ -117,17 +117,15 @@ module.exports = {
     try {
       const { rangeYears, iesFilters, collegeFilters, studentFilters } = req.body.data;
 
-      if (rangeYears.length > 1) {
+      if (rangeYears.length !== 0) {
         const iesOptions = iesFilterQuery(iesFilters);
         const studentOptions = studentFilterQuery(studentFilters);
         
         const response = await Promise.map(
           rangeYears,
           async (year) => {
-            const whereFilters = [];
             const collegeOptions = collegeFilterQuery(collegeFilters, year);
-
-            whereFilters.push(iesOptions, collegeOptions, studentOptions);
+            const whereFilters = [iesOptions, collegeOptions, studentOptions];
             const whereFiltersNotNull = whereFilters.filter(filters => filters !== null).join(' AND ');
             
             const data = await executeQuery(year, whereFiltersNotNull);
@@ -140,27 +138,8 @@ module.exports = {
           {concurrency: 2}
         );
         return res.json(response);
-      } 
-      else {
-        console.log("UM ANO");
-        const iesOptions = iesFilterQuery(iesFilters);
-        // const collegeOptions = iesFilterQuery(collegeFilters);
-        // const studentOptions = iesFilterQuery(studentFilters);
-
-        // console.log("iesOptions", iesOptions);
-        // console.log("collegeOptions", collegeOptions);
-        // console.log("studentOptions", studentOptions);
-        
-        // const whereFilters = `${iesOptions} ${collegeOptions} ${studentOptions}`;
-        // console.log('iesOptions', iesOptions);
-        const data = await executeQuery(rangeYears[0], iesOptions);
-        
-        const payload = {
-          year: rangeYears[0],
-          finalCount: data.rows[0]
-        }
-
-        return res.json(payload);
+      } else {
+        return res.json(null);
       }
     } catch (error) {
       return res.json(error);
