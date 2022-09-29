@@ -12,14 +12,22 @@ async function executeQuery(year, whereFilters) {
 function subQuery(filter, column) {
   const inSQL = 'IN';
   const equalSQL = '=';
-  let optionsQuery = "";
   if (filter.options.length === 1) {
-    optionsQuery = `${equalSQL} ${filter.options[0].value}`;
+    return `${column} ${equalSQL} ${filter.options[0].value}`;
   } else {
     const options = filter.options.map(option => option.value);
-    optionsQuery = `${inSQL}(${options.join()})`;
+    return `${column} ${inSQL}(${options.join()})`;
   }
-  return `${column} ${optionsQuery}`;
+};
+
+function subQueryCheck(filter, column) {
+  const equalSQL = '=';
+  const valueColumnTrue = 1;
+  if (filter.amount) {
+    return `${column} ${equalSQL} ${filter.amount}`;
+  } else {
+    return `${column} ${equalSQL} ${valueColumnTrue}`;
+  }
 };
 
 function subQueryCollegeName(filter, column, year) {
@@ -168,7 +176,6 @@ function studentFilterQuery(studentFilters) {
       }
 
     });
-    console.log(query);
     return query.join(` ${andSQL} `);
   }
   return null; 
@@ -188,8 +195,9 @@ module.exports = {
           async (year) => {
             const collegeOptions = collegeFilterQuery(collegeFilters, year);
             const whereFilters = [iesOptions, collegeOptions, studentOptions];
-            // console.log(whereFilters);
             const whereFiltersNotNull = whereFilters.filter(filters => filters !== null).join(' AND ');
+            console.log(year);
+            console.log(whereFiltersNotNull);
             
             const data = await executeQuery(year, whereFiltersNotNull);
             const payload = {
