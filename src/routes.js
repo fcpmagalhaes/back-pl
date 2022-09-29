@@ -7,7 +7,7 @@ const ResearchController = require("./controllers/ResearchController");
 
 const routes = express.Router();
 
-routes.post("/research", ResearchController.testIndex);
+routes.post("/research", ResearchController.index);
 routes.post("/ies_names", IesController.iesNames);
 routes.post("/college_names", CollegeController.collegeNames);
 
