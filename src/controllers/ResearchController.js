@@ -196,13 +196,11 @@ module.exports = {
             const collegeOptions = collegeFilterQuery(collegeFilters, year);
             const whereFilters = [iesOptions, collegeOptions, studentOptions];
             const whereFiltersNotNull = whereFilters.filter(filters => filters !== null).join(' AND ');
-            console.log(year);
-            console.log(whereFiltersNotNull);
             
             const data = await executeQuery(year, whereFiltersNotNull);
             const payload = {
-              year,
-              finalCount: data.rows[0]
+              year: year.toString(),
+              finalCount: parseInt(data.rows[0].count, 10),
             }
             return payload;
           },
