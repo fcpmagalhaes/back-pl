@@ -71,8 +71,8 @@ module.exports = {
       } catch (error) {
         return res.json(error);
       }
-
-      return res.json(filters);
+      return res.json('batatinha');
+      // return res.json(filters);
     } catch (error) {
       return res.json(error);
     }
