@@ -6,7 +6,10 @@ const CollegeController = require("./controllers/CollegeController");
 const ResearchController = require("./controllers/ResearchController");
 
 const routes = express.Router();
-
+routes.get("/", (req,res) => {
+  
+      res.status(200).json({ message: "We are flying 🚀"});
+});
 routes.post("/research", ResearchController.index);
 routes.post("/ies_names", IesController.iesNames);
 routes.post("/college_names", CollegeController.collegeNames);
