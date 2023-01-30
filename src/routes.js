@@ -13,7 +13,7 @@ routes.post("/research", ResearchController.index);
 routes.post("/ies_names", IesController.iesNames);
 routes.post("/college_names", CollegeController.collegeNames);
 
-routes.post("/ies_filters", IesController.index);
+routes.get("/ies_filters", IesController.index);
 routes.post("/college_filters", CollegeController.index);
 routes.post("/student_filters", StudentController.index);
 
