@@ -71,8 +71,7 @@ module.exports = {
       } catch (error) {
         return res.json(error);
       }
-      return res.json('batatinha');
-      // return res.json(filters);
+      return res.json(filters);
     } catch (error) {
       return res.json(error);
     }
@@ -83,7 +82,7 @@ module.exports = {
       const { range } = req.body.data;
       const filters = [];
       let iesOptions = {};
-
+      console.log('entrei iesNames');
       const options = await Promise.map(
         range,
         async (year) => {
