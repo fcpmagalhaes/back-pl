@@ -20,13 +20,12 @@ module.exports = {
   production: {
     client: "pg",
     connection: process.env.DATABASE_URL,
-    pool: {
-      min: 2,
-      max: 10,
+    ssl: {
+      rejectUnauthorized: false
     },
     migrations: {
       tableName: "knex_migrations_prod",
-      directory: './migrations',
+      directory: './database/migrations',
     },
   },
 };

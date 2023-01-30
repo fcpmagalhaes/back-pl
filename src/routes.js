@@ -7,7 +7,6 @@ const ResearchController = require("./controllers/ResearchController");
 
 const routes = express.Router();
 routes.get("/", (req,res) => {
-  
       res.status(200).json({ message: "We are flying 🚀"});
 });
 routes.post("/research", ResearchController.index);
