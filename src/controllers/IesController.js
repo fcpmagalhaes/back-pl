@@ -82,7 +82,6 @@ module.exports = {
       const { range } = req.body.data;
       const filters = [];
       let iesOptions = {};
-      console.log('entrei iesNames');
       const options = await Promise.map(
         range,
         async (year) => {

@@ -117,9 +117,6 @@ module.exports = {
       const { range, iesFilters } = req.body.data;
       const filters = [];
       let collegeOptions = {};
-      console.log(range);
-      console.log(iesFilters);
-      
 
       const stringSQL = iesFilters.map((filter) => {
         if (filter.value === 1) {
@@ -138,8 +135,6 @@ module.exports = {
            });
         }
       });
-
-      console.log("stringSQL", stringSQL);
 
       const options = await Promise.map(
         range,
