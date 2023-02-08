@@ -4,7 +4,7 @@ const knex = require("knex");
 const configuration = require("../../knexfile");
 
 const config = process.env.DB_ENVIRONMENT === 'production' ? configuration.production : configuration.development;
-console.log('config', config);
+
 module.exports = knex(config);
 
 
