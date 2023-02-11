@@ -44,7 +44,7 @@ module.exports = {
         const { rows } = await genericQuery(degreeLevelQuery);
 
         degreeLevel.value = 1;
-        degreeLevel.label = "Gráu Acadêmico";
+        degreeLevel.label = "Grau Acadêmico";
         degreeLevel.type = "select";
         degreeLevel.options = rows;
         filters.push(degreeLevel);
